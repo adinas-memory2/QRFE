@@ -141,7 +141,11 @@
       "newsletter": "Håll dig uppdaterad",
       "email": "du@restaurang.se",
       "rights": "© 2026 Universal Restaurant Systems. Alla rättigheter förbehållna."
-    }
+    },"chat": {
+  "placeholder": "Fråga mig något om plattformen...",
+  "send": "Skicka",
+  "title": "URS AI-assistent"
+}
   },
   "partners": {
     "hero": {

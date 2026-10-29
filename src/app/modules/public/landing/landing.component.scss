@@ -1,1 +1,57 @@
 @use './urs-landing';
+/* Stiluri pentru widgetul de chat flotant din stânga-jos */
+/* Stiluri pentru widgetul de chat flotant din dreapta-jos */
+.urs-floating-chat {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 320px;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--line, #dfe9e6);
+  border-radius: var(--urs-radius, 18px);
+  z-index: 1050;
+  overflow: hidden;
+  box-shadow: var(--urs-shadow, 0 18px 50px -24px rgba(7, 79, 87, 0.45));
+  transition: all 0.3s ease;
+
+  &.minimized {
+    width: 220px; // se poate micșora lățimea doar la titlu dacă dorești
+  }
+
+  .messages-list {
+    background: var(--surface-2, #f4f8f6);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .chat-message {
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    padding: 6px 10px;
+    border-radius: 8px;
+  }
+
+  .chat-input-area {
+    background: var(--surface);
+  }
+}
+
+/* Suport pentru Dark Mode pe componenta de chat */
+[data-theme='dark'] {
+  .urs-floating-chat {
+    background: var(--card, #102a2e);
+    border-color: var(--line);
+
+    .messages-list {
+      background: var(--surface-2, #0f262a);
+    }
+
+    .chat-message {
+      background: var(--surface-2);
+      border-color: var(--line);
+      color: var(--ink);
+    }
+  }
+}

@@ -141,7 +141,11 @@
       "newsletter": "Mantente al día",
       "email": "tu@restaurante.es",
       "rights": "© 2026 Universal Restaurant Systems. Todos los derechos reservados."
-    }
+    },"chat": {
+  "placeholder": "Pregúntame algo sobre la plataforma...",
+  "send": "Enviar",
+  "title": "Asistente de IA URS"
+}
   },
   "partners": {
     "hero": {

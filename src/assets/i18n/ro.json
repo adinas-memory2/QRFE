@@ -141,6 +141,11 @@
       "newsletter": "Rămâi la curent",
       "email": "tu@restaurant.ro",
       "rights": "© 2026 Universal Restaurant Systems. Toate drepturile rezervate."
+    },
+      "chat": {
+      "placeholder": "Întreabă ceva despre platformă...",
+      "send": "Trimite",
+      "title": "Asistent AI URS"
     }
   },
   "partners": {

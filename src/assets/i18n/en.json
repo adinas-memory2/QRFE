@@ -141,6 +141,10 @@
       "newsletter": "Stay in the loop",
       "email": "you@restaurant.com",
       "rights": "© 2026 Universal Restaurant Systems. All rights reserved."
+    },"chat": {
+      "placeholder": "Ask me something about the platform...",
+      "send": "Send",
+      "title": "AI URS Assistant"
     }
   },
   "partners": {

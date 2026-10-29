@@ -141,7 +141,12 @@
       "newsletter": "Resta aggiornato",
       "email": "tu@ristorante.it",
       "rights": "© 2026 Universal Restaurant Systems. Tutti i diritti riservati."
-    }
+    },
+    "chat": {
+  "placeholder": " Chiedimi qualcosa sulla piattaforma...",
+  "send": "Invia",
+  "title": "Assistente AI URS"
+}
   },
   "partners": {
     "hero": {

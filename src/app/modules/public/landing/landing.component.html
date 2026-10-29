@@ -250,4 +250,39 @@
   <section class="urs-faq-wrap section-tight" id="faq">
     <app-faq [compact]="true" [embedded]="true" />
   </section>
+  <!-- Floating Chat Container (Stânga-Jos) -->
+<!-- Floating Chat Container (Dreapta-Jos) -->
+<div class="urs-floating-chat shadow-lg" [class.minimized]="isChatMinimized">
+  <div class="chat-header d-flex align-items-center justify-content-between p-2 border-bottom" (click)="toggleChat()" style="cursor: pointer;">
+    <span class="fw-bold small"><i class="bi bi-chat-dots-fill me-1"></i> {{ 'landing.chat.title' | transloco }}</span>
+    <button type="button" class="btn btn-sm p-0 text-secondary" [attr.aria-label]="isChatMinimized ? 'Maximize' : 'Minimize'">
+      <i class="bi" [class.bi-dash-lg]="!isChatMinimized" [class.bi-plus-lg]="isChatMinimized"></i>
+    </button>
+  </div>
+
+  @if (!isChatMinimized) {
+    <!-- Lista de mesaje -->
+    <div class="messages-list p-2 overflow-auto" style="height: 200px; max-height: 200px;">
+      @for (msg of messages; track msg) {
+        <div class="chat-message mb-1 small p-1 rounded bg-light">
+          {{ msg }}
+        </div>
+      }
+    </div>
+
+    <!-- Zona de input -->
+    <div class="chat-input-area p-2 border-top d-flex gap-1">
+      <input 
+        type="text" 
+        class="form-control form-control-sm"
+        [(ngModel)]="userMessage" 
+        (keyup.enter)="sendChatMessage()" 
+        [attr.placeholder]="'landing.chat.placeholder' | transloco"
+      />
+      <button class="btn btn-primary btn-sm" (click)="sendChatMessage()">
+        {{ 'landing.chat.send' | transloco }}
+      </button>
+    </div>
+  }
+</div>
 </app-public-urs-shell>
