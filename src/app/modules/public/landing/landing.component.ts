@@ -6,6 +6,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormsModule }from '@angular/forms'
 import { AuthService } from '../../../core/auth/auth.service';
 import { SubscriptionService } from '../../../core/services/subscription-service/subscription.service';
 import { ProductLimitModel, SubscriptionProductModel } from '../../../core/models/subscription-product';
@@ -20,6 +21,7 @@ import {
 } from './landing-subscription-fallback';
 import { SeoService } from '../../../core/services/seo/seo.service';
 import { marketFromLang } from '../../../core/i18n/subscription-market.config';
+import { RagService } from '../../../core/services/ai-service/rag-service';
 
 interface LandingFeature {
   icon: string;
@@ -35,6 +37,7 @@ interface LandingFeature {
     CurrencyPipe,
     PublicUrsShellComponent,
     TranslocoPipe,
+    FormsModule
   ],
   styleUrls: ['./landing.component.scss'],
   templateUrl: './landing.component.html',
@@ -57,7 +60,11 @@ export class LandingComponent implements OnInit, OnDestroy, AfterViewInit {
   private readonly destroy$ = new Subject<void>();
   private revealObserver: IntersectionObserver | null = null;
   private sectionObserver: IntersectionObserver | null = null;
-  private activeMarket = marketFromLang(this.transloco.getActiveLang());
+  private activeMarket!: string;
+  messages: string[] = [];      
+  userMessage: string = '';   
+  isChatMinimized: boolean = false;   
+  
 
   constructor(
     private authService: AuthService,
@@ -65,7 +72,50 @@ export class LandingComponent implements OnInit, OnDestroy, AfterViewInit {
     private transloco: TranslocoService,
     private router: Router,
     private seo: SeoService,
-  ) {}
+    private ragService: RagService
+  ) {
+    this.activeMarket = marketFromLang(this.transloco.getActiveLang());
+  }
+
+  
+  toggleChat(): void {
+  this.isChatMinimized = !this.isChatMinimized;
+  }
+
+  sendChatMessage(): void {
+    if (!this.userMessage.trim()) return;
+
+    const query = this.userMessage;
+    this.userMessage = ''; // Resetează input-ul
+    
+    
+    this.pushMessage(`User: ${query}`);
+    
+
+    this.ragService.sendMessage(query)
+      .pipe(takeUntil(this.destroy$)) 
+      .subscribe({
+        next: (res) => {
+          const aiResponse = typeof res === 'string' ? res : (res.response || 'Empty answer');
+          this.pushMessage(`AI: ${aiResponse}`);
+          
+        },
+        error: (err) => {
+          console.error('RAG chat error:', err);
+          this.pushMessage('AI: There is an error in communication with the AI server.');
+          
+        }
+      });
+  }
+
+  // Funcție helper pentru a adăuga mesajul și a păstra doar ultimele 10
+  private pushMessage(message: string): void {
+    this.messages.push(message);
+    
+    if (this.messages.length > 10) {
+      this.messages = this.messages.slice(-10);
+    }
+  }
 
   handleCardClick(card: SubscriptionProductModel): void {
     this.subscriptionService.setPendingPlan({

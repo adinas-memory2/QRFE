@@ -17,6 +17,7 @@ import {
   StockMovementDto,
   StockReceiptDto,
   StockReceiptLineInput,
+  StockReceiptLineUpdateInput,
   UnitOfMeasure,
 } from '../../models/recipe/recipe.models';
 
@@ -263,6 +264,38 @@ export class RecipeInventoryService {
     return this.http.post<StockReceiptDto>(
       `${this.apiUrl}/api/restaurants/${restaurantId}/admin/stock-receipts`,
       body,
+      { withCredentials: true },
+    );
+  }
+
+  getStockReceipt(restaurantId: string, stockReceiptId: string): Observable<StockReceiptDto> {
+    return this.http.get<StockReceiptDto>(
+      `${this.apiUrl}/api/restaurants/${restaurantId}/admin/stock-receipts/${stockReceiptId}`,
+      { withCredentials: true },
+    );
+  }
+
+  updateStockReceipt(
+    restaurantId: string,
+    stockReceiptId: string,
+    body: {
+      supplier?: string | null;
+      receivedOn?: string | null;
+      note?: string | null;
+      invoiceNumber?: string | null;
+      lines: StockReceiptLineUpdateInput[];
+    },
+  ): Observable<StockReceiptDto> {
+    return this.http.post<StockReceiptDto>(
+      `${this.apiUrl}/api/restaurants/${restaurantId}/admin/stock-receipts/${stockReceiptId}/update`,
+      body,
+      { withCredentials: true },
+    );
+  }
+
+  deleteStockReceipt(restaurantId: string, stockReceiptId: string): Observable<void> {
+    return this.http.delete<void>(
+      `${this.apiUrl}/api/restaurants/${restaurantId}/admin/stock-receipts/${stockReceiptId}`,
       { withCredentials: true },
     );
   }
