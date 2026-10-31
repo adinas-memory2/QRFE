@@ -3,6 +3,8 @@ import {
   Component,
   OnDestroy,
   OnInit,
+  ViewChild,
+  ElementRef,
   ViewEncapsulation,
 } from '@angular/core';
 import { Router } from '@angular/router';
@@ -63,7 +65,9 @@ export class LandingComponent implements OnInit, OnDestroy, AfterViewInit {
   private activeMarket!: string;
   messages: string[] = [];      
   userMessage: string = '';   
-  isChatMinimized: boolean = false;   
+  isChatMinimized: boolean = false;  
+  @ViewChild('messagesContainer') private messagesContainer!: ElementRef; 
+  isAiThinking: boolean = false;
   
 
   constructor(
@@ -83,29 +87,44 @@ export class LandingComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   sendChatMessage(): void {
-    if (!this.userMessage.trim()) return;
+    if (!this.userMessage.trim() || this.isAiThinking) return;
 
     const query = this.userMessage;
-    this.userMessage = ''; // Resetează input-ul
-    
+    this.userMessage = '';     
     
     this.pushMessage(`User: ${query}`);
-    
+    this.scrollToBottom();
+    this.isAiThinking = true;    
 
     this.ragService.sendMessage(query)
       .pipe(takeUntil(this.destroy$)) 
       .subscribe({
         next: (res) => {
+          this.isAiThinking = false;
           const aiResponse = typeof res === 'string' ? res : (res.response || 'Empty answer');
           this.pushMessage(`AI: ${aiResponse}`);
-          
+          this.scrollToBottom();          
         },
         error: (err) => {
+          this.isAiThinking = false;
           console.error('RAG chat error:', err);
           this.pushMessage('AI: There is an error in communication with the AI server.');
-          
+          this.scrollToBottom();
         }
       });
+    }
+
+    private scrollToBottom(): void {
+    setTimeout(() => {
+      try {
+        if (this.messagesContainer) {
+          const el = this.messagesContainer.nativeElement;
+          el.scrollTop = el.scrollHeight;
+        }
+      } catch (err) {
+        console.error('Scroll error:', err);
+      }
+    }, 50); 
   }
 
   // Funcție helper pentru a adăuga mesajul și a păstra doar ultimele 10
