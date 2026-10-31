@@ -260,9 +260,8 @@
     </button>
   </div>
 
-  @if (!isChatMinimized) {
-    <!-- Lista de mesaje -->
-    <div class="messages-list p-2 overflow-auto" style="height: 200px; max-height: 200px;">
+    @if (!isChatMinimized) {    
+    <div class="messages-list p-2 overflow-auto" style="height: 200px; max-height: 200px;" #messagesContainer>
       @for (msg of messages; track msg) {
         <div class="chat-message mb-1 small p-1 rounded bg-light">
           {{ msg }}
@@ -270,7 +269,17 @@
       }
     </div>
 
-    <!-- Zona de input -->
+    @if (isAiThinking) {
+        <div class="chat-message ai-thinking mb-1 small p-2 rounded bg-light d-flex align-items-center gap-2">          
+          <div class="typing-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      }
+    
+    <!-- Zona input -->
     <div class="chat-input-area p-2 border-top d-flex gap-1">
       <input 
         type="text" 
