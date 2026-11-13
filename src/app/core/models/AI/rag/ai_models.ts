@@ -3,5 +3,6 @@ export interface ChatResponse {
 }
 
 export interface ChatRequest {
+    sessionId: string;
     message: string;    
 }

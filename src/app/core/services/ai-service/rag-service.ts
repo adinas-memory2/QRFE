@@ -11,11 +11,14 @@ import { ChatRequest } from '../../models/AI/rag/ai_models';
 export class RagService {
   private apiUrl = environment.apiUrl;
   private chatEndpoint = "api/chat"
+  private sessionId: string; 
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.sessionId = crypto.randomUUID();
+  }
 
   public sendMessage(message: string): Observable<any> {
-    const body: ChatRequest = { message };
+    const body: ChatRequest = { sessionId: this.sessionId, message };
     return this.http.post<any>(`${this.apiUrl}/${this.chatEndpoint}`, body);
     
   }
